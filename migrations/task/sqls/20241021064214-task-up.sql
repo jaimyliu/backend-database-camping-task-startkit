@@ -24,15 +24,9 @@ values('李燕容','lee2000@hexschooltest.io','USER'),
 ('透明人','opacity0@hexschooltest.io','USER');
 
 -- 1-2 修改：用 Email 找到 李燕容、肌肉棒子、Q太郎，如果他的 Role 為 USER 將他的 Role 改為 COACH
-select *
-from "USER" 
-where email = 'lee2000@hexschooltest.io' or email = 'muscle@hexschooltest.io' or email = 'starplatinum@hexschooltest.io' ;
-
 update "USER" 
 set role = 'COACH'
 where email = 'lee2000@hexschooltest.io' or email = 'muscle@hexschooltest.io' or email = 'starplatinum@hexschooltest.io' ;
-
-
 -- 1-3 刪除：刪除USER 資料表中，用 Email 找到透明人，並刪除該筆資料
 delete from "USER" 
 where email = 'opacity0@hexschooltest.io';
@@ -53,7 +47,7 @@ select * from "USER" limit 3;
     -- 2. 名稱為`14 堂組合包方案`，價格為`2,520` 元，堂數為`14`
     -- 3. 名稱為 `21 堂組合包方案`，價格為`4,800` 元，堂數為`21`
 insert into "CREDIT_PACKAGE"(name,credit_amount,price)
-values('7 堂組合包方案',7,1400),('14 堂組合包方案',14,2520),('14 堂組合包方案',21,4000);
+values('7 堂組合包方案',7,1400),('14 堂組合包方案',14,2520),('21 堂組合包方案',21,4000);
 -- 2-2. 新增：在 `CREDIT_PURCHASE` 資料表，新增三筆資料：（請使用 name 欄位做子查詢）
     -- 1. `王小明` 購買 `14 堂組合包方案`
     -- 2. `王小明` 購買 `21 堂組合包方案`
