@@ -9,7 +9,6 @@
 
 -- 1. 新增：新增六筆用戶資料，資料如下：
 --     1. 用戶名稱為`李燕容`，Email 為`lee2000@hexschooltest.io`，Role為`USER`
-insert into "USER"(name,email,role) values('李燕容','lee2000@hexschooltest.io','USER')
 --     2. 用戶名稱為`王小明`，Email 為`wXlTq@hexschooltest.io`，Role為`USER`
 --     3. 用戶名稱為`肌肉棒子`，Email 為`muscle@hexschooltest.io`，Role為`USER`
 --     4. 用戶名稱為`好野人`，Email 為`richman@hexschooltest.io`，Role為`USER`
