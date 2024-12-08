@@ -210,7 +210,21 @@ group by user_id;
     -- from ( 用戶王小明的購買堂數 ) as "CREDIT_PURCHASE"
     -- inner join ( 用戶王小明的已使用堂數) as "COURSE_BOOKING"
     -- on "COURSE_BOOKING".user_id = "CREDIT_PURCHASE".user_id;
-
+SELECT a.user_id, (a.total - b.total) AS remaining_credit
+FROM (
+    SELECT u.id AS user_id, SUM(cp.purchased_credits) AS total
+    FROM "USER" u
+    INNER JOIN "CREDIT_PURCHASE" cp ON u.id = cp.user_id
+    WHERE u.name = '王小明'
+    GROUP BY u.id
+) AS a
+INNER JOIN (
+    select user_id, count(join_at) as total
+	from "COURSE_BOOKING" cb 
+	where user_id = (select id from "USER" where name = '王小明') and cancelled_at is null 
+	group by user_id
+) AS b
+ON a.user_id = b.user_id;
 
 -- ████████  █████   █     ███  
 --   █ █   ██    █  █     █     
