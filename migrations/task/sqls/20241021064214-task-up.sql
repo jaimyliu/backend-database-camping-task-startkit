@@ -235,15 +235,47 @@ ON a.user_id = b.user_id;
 -- 6. 後台報表
 -- 6-1 查詢：查詢專長為重訓的教練，並按經驗年數排序，由資深到資淺（需使用 inner join 與 order by 語法)
 -- 顯示須包含以下欄位： 教練名稱 , 經驗年數, 專長名稱
-
+select "a".name as 教練名稱, "a".experience_years as 經驗年數, s."name"  as 專長名稱
+from
+(select u.name,c.id,c.user_id,c.experience_years from "USER" u 
+inner join "COACH" c
+on u.id =c.user_id )as "a"
+inner join "COACH_LINK_SKILL" cls
+on "a".id=cls.coach_id 
+inner join "SKILL" s 
+on cls.skill_id =s.id 
+where s.name='重訓'
+order by "a".experience_years desc;
 -- 6-2 查詢：查詢每種專長的教練數量，並只列出教練數量最多的專長（需使用 group by, inner join 與 order by 與 limit 語法）
 -- 顯示須包含以下欄位： 專長名稱, coach_total
-
+select s."name" as 專長名稱, count("a".id) as coach_total
+from 
+(select u.name,c.id,c.user_id,c.experience_years from "USER" u 
+inner join "COACH" c
+on u.id =c.user_id )as "a"
+inner join "COACH_LINK_SKILL" cls
+on "a".id=cls.coach_id 
+inner join "SKILL" s 
+on cls.skill_id =s.id 
+group by s."name"
+order by coach_total desc 
+limit 1;
 -- 6-3. 查詢：計算 11 月份組合包方案的銷售數量
 -- 顯示須包含以下欄位： 組合包方案名稱, 銷售數量
-
+select cp."name" as 組合包方案名稱, count(cp2.credit_package_id ) as 銷售數量
+from "CREDIT_PACKAGE" cp 
+inner join "CREDIT_PURCHASE" cp2 
+on cp.id =cp2.credit_package_id 
+where cp2.purchase_at between '2024-11-01 00:00:00' and '2024-11-30 23:59:59'
+group by cp."name";
 -- 6-4. 查詢：計算 11 月份總營收（使用 purchase_at 欄位統計）
 -- 顯示須包含以下欄位： 總營收
-
+select sum(cp.price_paid ) as 總營收
+from  "CREDIT_PURCHASE" cp 
+where cp.purchase_at between '2024-11-01 00:00:00' and '2024-11-30 23:59:59';
 -- 6-5. 查詢：計算 11 月份有預約課程的會員人數（需使用 Distinct，並用 created_at 和 status 欄位統計）
 -- 顯示須包含以下欄位： 預約會員人數
+SELECT COUNT(DISTINCT user_id) as 預約會員人數
+FROM "COURSE_BOOKING" cb 
+where created_at between '2024-11-01 00:00:00' and '2024-11-30 23:59:59'
+and status NOT IN ('課程已取消');
